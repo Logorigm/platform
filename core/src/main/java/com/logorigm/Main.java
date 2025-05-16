@@ -3,17 +3,14 @@ package com.logorigm;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.loaders.resolvers.ExternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -24,7 +21,6 @@ public class Main extends ApplicationAdapter {
     private boolean bullet = false;
     FitViewport viewport;
 
-    private Texture duckTexture;
 
     Texture backgroundTexture;
     Texture duckbulletTexture;
@@ -49,7 +45,6 @@ public class Main extends ApplicationAdapter {
         map = new TmxMapLoader().load("testmap.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
 
-        duckTexture = new Texture("Dug.png");
         {
             duck = new Duck();
         }
@@ -85,19 +80,12 @@ public class Main extends ApplicationAdapter {
 
     }
     private void logic() {
-        float worldWidth = viewport.getWorldWidth();
-        float worldHeight = viewport.getWorldHeight();
 
-        float duckWidth = duck.duckRectangle.getWidth();
-        float duckHeight = duck.duckRectangle.getHeight();
-
-
-        duck.duckRectangle.set(duck.duckRectangle.getX(), duck.duckRectangle.getY(), duckWidth, duckHeight);
 
         float duckbulletWidth = duckbulletRectangle.getWidth();
         float duckbulletHeight = duckbulletRectangle.getHeight();
 
-        //duck.logic();
+        duck.logic();
 
         float delta = Gdx.graphics.getDeltaTime();
 
@@ -118,13 +106,6 @@ public class Main extends ApplicationAdapter {
         ScreenUtils.clear(Color.BLACK);
         viewport.apply();
 
-        float worldWidth = viewport.getWorldWidth();
-        float worldHeight = viewport.getWorldHeight();
-
-        spriteBatch.begin();
-        spriteBatch.draw(backgroundTexture, 0, 0, worldWidth, worldHeight);
-        spriteBatch.end();
-
         mapRenderer.setView(camera);
         mapRenderer.render();
 
@@ -132,8 +113,7 @@ public class Main extends ApplicationAdapter {
         spriteBatch.begin();
 
 
-        //duck.draw(spriteBatch);\
-        spriteBatch.draw(duckTexture, duck.duckRectangle.x, duck.duckRectangle.y, 32, 32);
+        duck.draw(spriteBatch);
 
         if(bullet){
             spriteBatch.draw(duckbulletTexture, duckbulletRectangle.getX(), duckbulletRectangle.getY(),20,18);
@@ -145,8 +125,5 @@ public class Main extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         backgroundTexture.dispose();
-        duckTexture.dispose();
-        //duck.dispose();
-        //image.dispose();
     }
 }
