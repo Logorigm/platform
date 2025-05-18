@@ -77,7 +77,6 @@ public class Main extends ApplicationAdapter {
         input();
         logic();
         draw();
-
     }
     private void logic() {
 
